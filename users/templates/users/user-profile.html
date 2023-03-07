@@ -1,23 +1,26 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<!-- Main Section -->
+
+    <!-- Main Section -->
   <main class="profile my-md">
     <div class="container">
       <div class="layout">
         <div class="column column--1of3">
           <div class="card text-center">
             <div class="card__body dev">
-              <img class="avatar avatar--xl" src="https://avatars.githubusercontent.com/u/33843378" />
-              <h2 class="dev__name">Dennis Ivanov</h2>
-              <p class="dev__title">Expirance FullStack Developer, Youtuber and Instructor</p>
-              <p class="dev__location">Based in Florida, USA</p>
+              <img class="avatar avatar--xl" src="{{profile.profile_image.url}}"/>
+              <h2 class="dev__name">{{profile.name}}</h2>
+              <p class="dev__title">{{profile.short_intro}}</p>
+              <p class="dev__location">Based in {{profile.location}}</p>
               <ul class="dev__social">
+                {% if profile.social_github %}
                 <li>
                   <a title="Github" href="#" target="_blank"><i class="im im-github"></i></a>
                 </li>
+                {% endif %}
                 <li>
-                  <a title="Stackoverflow" href="#" target="_blank"><i class="im im-stackoverflow"></i></a>
+                  <a title="Stackoverflow" href="{{ profile.social.github }}" target="_blank"><i class="im im-stackoverflow"></i></a>
                 </li>
                 <li>
                   <a title="Twitter" href="#" target="_blank"><i class="im im-twitter"></i></a>
@@ -196,5 +199,4 @@
       </div>
     </div>
   </main>
-
 {% endblock content %}
