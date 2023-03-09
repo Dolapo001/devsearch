@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile
 
@@ -11,6 +12,8 @@ from .models import Profile
 
 
 def loginUser(request):
+    page: 'login'
+
     if request.user.is_authenticated:
         return redirect('profiles')
 
@@ -36,6 +39,19 @@ def logoutUser(request):
     messages.error(request, 'User was logged out!')
     logout(request)
     return redirect('login')
+
+def registerUser(request):
+    page = 'register'
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+
+
+    context = {'page': page, 'form': form}
+    return render(request, 'users/login_register.html', context)
 
 
 def profiles(request):
