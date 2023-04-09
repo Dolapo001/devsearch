@@ -1,7 +1,7 @@
 from django.forms import ModelForm, widgets
 from django import forms
 from .models import Project
-
+ 
 
 class ProjectForm(ModelForm):
     class Meta:
