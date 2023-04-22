@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile
+from .forms import CustomUserCreationForm, ProfileForm
 
 
 
@@ -81,7 +82,10 @@ def userAccount(request):
     return render(request, 'users/account.html', context)
 
 
+@login_required(login_url='login')
 def editAccount(request):
-    return render(request, 'users/profile_form.html')
+    form = ProfileForm()
+    context = {'form': form}
+    return render(request, 'users/profile_form.html', context)
 
 
