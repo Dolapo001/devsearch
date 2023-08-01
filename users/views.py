@@ -5,8 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile
-from .forms import CustomUserCreationForm, ProfileForm
-
+from .forms import CustomUserCreationForm, ProfileForm, SkillForm
 
 
 # Create your views here.
@@ -41,12 +40,13 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
+
 def registerUser(request):
     page = 'register'
-    form = UserCreationForm()
+    form = CustomUserCreationForm()
 
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
@@ -94,3 +94,8 @@ def editAccount(request):
     return render(request, 'users/profile_form.html', context)
 
 
+@login_required(login_url='login')
+def createSkill(request):
+    form = SkillForm
+    context = {'form':form}
+    return render(request, 'users/skill_form.html', context)
