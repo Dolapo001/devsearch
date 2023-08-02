@@ -21,6 +21,16 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def imageURL(self):
+        try:
+            url = self.featured_image.url
+        except:
+            url = ''
+        return url
+
+
+
 class Review(models.Model):
     VOTE_TYPE = (
         ('up', 'Up Vote'),
