@@ -9,8 +9,6 @@ from .forms import CustomUserCreationForm, ProfileForm, SkillForm
 
 
 # Create your views here.
-
-
 def loginUser(request):
     page: 'login'
 
@@ -73,7 +71,6 @@ def userProfile(request, pk):
     return render(request, 'users/user-profile.html', context)
 
 
-
 @login_required(login_url='login')
 def userAccount(request):
     profile = request.user.profile
@@ -125,10 +122,21 @@ def updateSkill(request, pk):
         form = SkillForm(request.POST, instance=skill)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Skill was updated successfully!!')
+            messages.success(request, 'Skill was updated successfully!')
             return redirect('account')
 
     context = {'form': form}
     return render(request, 'users/skill_form.html', context)
 
+
+@login_required(login_url='login')
+def deleteSkill(request, pk):
+    profile = request.user.profile
+    skill = profile.skill_set.get(id=pk)
+    if request.method == 'POST':
+        skill.delete()
+        messages.success(request, 'Skill was deleted successfully!')
+        return redirect('account')
+    context = {'object': skill}
+    return render(request, 'delete_template.html', context)
 
