@@ -4,10 +4,34 @@ from django.contrib.auth.decorators import login_required
 from .models import Project
 from .forms import ProjectForm
 from .utils import searchProject
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 
 def projects(request):
+    global custom_range
     projects, search_query = searchProject(request)
-    context = {'projects': projects, 'search_query': search_query}
+
+    page = request.GET.get('page')
+    results = 3
+    paginator = Paginator(projects, results)
+    try:
+
+        projects = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        projects = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        projects = paginator.page(page)
+
+    leftIndex = (page - 4)
+
+    custom_range = range(1, 20)
+
+    context = {'projects': projects,
+               'search_query': search_query,
+               'paginator': paginator,
+               'custom_range': custom_range}
     return render(request, 'projects/projects.html', context)
 
 
@@ -26,7 +50,7 @@ def createProject(request):
             project = form.save(commit=False)
             project.owner = profile
             project.save()
-            return redirect('projects')
+            return redirect('account')
     context = {'form': form}
     return render(request, "projects/project_form.html", context)
 
@@ -36,8 +60,6 @@ def updateProject(request, pk):
     profile = request.user.profile
     project = profile.project_set.get(id=pk)
     form = ProjectForm(instance=project)
-
-
 
     if request.method == 'POST':
         form = ProjectForm(request.POST, request.FILES, instance=project)
@@ -57,5 +79,3 @@ def deleteProject(request, pk):
         return redirect('account')
     context = {'object': project}
     return render(request, 'delete_template.html', context)
-
-
