@@ -3,34 +3,15 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Project
 from .forms import ProjectForm
-from .utils import searchProject
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from .utils import searchProjects, paginateProjects
+
 
 
 def projects(request):
-    global custom_range
-    projects, search_query = searchProject(request)
-
-    page = request.GET.get('page')
-    results = 3
-    paginator = Paginator(projects, results)
-    try:
-
-        projects = paginator.page(page)
-    except PageNotAnInteger:
-        page = 1
-        projects = paginator.page(page)
-    except EmptyPage:
-        page = paginator.num_pages
-        projects = paginator.page(page)
-
-    leftIndex = (page - 4)
-
-    custom_range = range(1, 20)
-
+    projects, search_query = searchProjects(request)
+    custom_range, projects = paginateProjects(request, projects, 2)
     context = {'projects': projects,
                'search_query': search_query,
-               'paginator': paginator,
                'custom_range': custom_range}
     return render(request, 'projects/projects.html', context)
 
