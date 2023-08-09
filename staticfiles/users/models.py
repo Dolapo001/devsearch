@@ -27,6 +27,16 @@ class Profile(models.Model):
         return str(self.username)
 
 
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.profile_image.url
+        except:
+            url = ''
+        return url
+
+
 class Skill(models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.CASCADE, null=True, blank=True)
@@ -36,6 +46,8 @@ class Skill(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
+    def __str__(self):
+        return self.name
 
 
 

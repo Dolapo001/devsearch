@@ -1,31 +1,31 @@
+/* Updated CSS for Centered Floating Alert Messages */
 .alert {
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Center the element */
   display: inline-flex;
-  gap: 3rem;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* Stack elements vertically */
+  gap: 1rem; /* Adjust the gap between elements */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
   padding: 1.5rem 2.5rem;
   border-radius: 3px;
   border: 1px solid var(--color-white-light);
-  margin-bottom: 1rem;
-  margin-right: 1rem;
-}
-
-.alert,
-.alert > .alert__message {
   background-color: var(--color-main-light);
   color: var(--color-main);
   font-size: 1.4rem;
   font-weight: var(--font-medium);
+  z-index: 9999; /* Adjust the z-index value as needed */
+  animation: floatIn 0.5s ease; /* Add animation for floating effect */
 }
 
-.alert.alert--error,
-.alert.alert--error > .alert__message {
+.alert.alert--error {
   background-color: var(--color-error-bg);
   color: var(--color-error);
 }
 
-.alert.alert--success,
-.alert.alert--success > .alert__message {
+.alert.alert--success {
   background-color: var(--color-success-bg);
   color: var(--color-success);
 }
@@ -41,4 +41,16 @@
 
 .alert > .alert__close:hover {
   opacity: 0.85;
+}
+
+/* Keyframes for floating animation */
+@keyframes floatIn {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
