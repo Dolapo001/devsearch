@@ -1,4 +1,5 @@
 from users.models import Profile
+
 from django.db import models
 import uuid
 
@@ -22,7 +23,12 @@ class Project(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['created']
+        ordering = ['-vote_ratio', '-vote_total', 'title']
+
+    @property
+    def reviewers(self):
+        queryset = self.review_set.all().values_list('owner__id', flat=True)
+        return queryset
 
     @property
     def imageURL(self):
@@ -32,6 +38,16 @@ class Project(models.Model):
             url = ''
         return url
 
+    @property
+    def getVoteCount(self):
+        reviews = self.review_set.all()
+        upVotes = reviews.filter(value='up').count()
+        totalVotes = reviews.count()
+
+        ratio = (upVotes / totalVotes) * 100
+        self.vote_total = totalVotes
+        self.vote_ratio = ratio
+        self.save()
 
 class Review(models.Model):
     VOTE_TYPE = (

@@ -7,7 +7,6 @@ from django.contrib import messages
 from .utils import searchProjects, paginateProjects
 
 
-
 def projects(request):
     projects, search_query = searchProjects(request)
     custom_range, projects = paginateProjects(request, projects, 6)
@@ -28,7 +27,8 @@ def project(request, pk):
         review.owner = request.user.profile
         review.save()
 
-        #update project votcount
+        projectObj.getVoteCount
+
         messages.success(request, 'Your review was successfully submitted!')
         return redirect('project', pk=projectObj.id)
 
