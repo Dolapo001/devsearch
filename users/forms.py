@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import Profile, Skill, Message
 
 
+
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
@@ -44,6 +45,7 @@ class SkillForm(ModelForm):
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})
+
 
 class MessageForm(ModelForm):
     class Meta:
