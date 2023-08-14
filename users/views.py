@@ -6,7 +6,7 @@ from django.urls import conf
 from django.contrib.auth.models import User
 from .models import Profile, Message
 from .utils import searchProfiles, paginateProfiles
-from .forms import CustomUserCreationForm, ProfileForm, SkillForm
+from .forms import CustomUserCreationForm, ProfileForm, SkillForm, MessageForm
 
 
 # Create your views here.
@@ -167,7 +167,8 @@ def viewMessage(request, pk):
 
 def createMessage(request, pk):
     recipient = Profile.objects.get(id=pk)
-    context = {'recipient': recipient}
+    form = MessageForm()
+    context = {'recipient': recipient, 'form': form}
     return render(request, 'users/message_form.html', context)
 
 
