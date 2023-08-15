@@ -4,7 +4,11 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Profile
 
+
+
 #@receiver(post_save, sender=Profile)
+
+
 def createProfile(sender, instance, created, **kwargs):
     print('Profile signal triggered')
     if created:
